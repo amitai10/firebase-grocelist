@@ -1,0 +1,33 @@
+<div class="container">
+  <div *ngIf="afAuth.authState | async as user; else showLogin">
+    <div class="header">
+      <div class="caption">Hi {{ user.displayName }}!</div>
+      <a class="logout" href="#" (click)="logout()">Logout</a>
+    </div>
+    <div class="input">
+      <input class="text" 
+      type="text" 
+      (keyup.enter)="addGrocery()" 
+      [(ngModel)]="name" 
+      name="name" 
+      id="add-grocery"
+      [ngbTypeahead]="search"
+      (focus)="focus$.next($event.target.value)"
+      (click)="click$.next($event.target.value)"
+      (selectItem)="selectedItem($event)"
+      #instance="ngbTypeahead"
+      placeholder="Add a Grocery...">
+    </div>
+    <div class="list-container">
+      <div class="list" *ngFor="let grocery of groceries | async">
+        <div class="item" (click)="delete(grocery)">
+          <div>{{ grocery.data.name}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #showLogin>
+    <p>Please login.</p>
+    <a href="#" (click)="login()">Login with Google</a>
+  </ng-template>
+</div>
